@@ -143,6 +143,7 @@ class CompanionNavigator(initial: List<Destination> = listOf(Destination.Roster)
         private const val SETTINGS = "settings"
         private const val ROUTINES = "routines"
         private const val CONNECTED_APPS = "connected-apps"
+        private const val PROVIDER_SETUP = "provider-setup"
         private const val THREAD = "thread:"
         private const val COMPUTER = "computer:"
         private const val OVERVIEW = "overview:"
@@ -155,6 +156,7 @@ class CompanionNavigator(initial: List<Destination> = listOf(Destination.Roster)
                 Destination.Settings -> SETTINGS
                 Destination.Routines -> ROUTINES
                 Destination.ConnectedApps -> CONNECTED_APPS
+                Destination.ProviderSetup -> PROVIDER_SETUP
                 is Destination.Thread -> THREAD + it.threadId
                 is Destination.Computer -> COMPUTER + it.botId
                 is Destination.Overview -> OVERVIEW + it.botId
@@ -171,6 +173,7 @@ class CompanionNavigator(initial: List<Destination> = listOf(Destination.Roster)
                 it == SETTINGS -> Destination.Settings
                 it == ROUTINES -> Destination.Routines
                 it == CONNECTED_APPS -> Destination.ConnectedApps
+                it == PROVIDER_SETUP -> Destination.ProviderSetup
                 it.startsWith(THREAD) -> Destination.Thread(it.removePrefix(THREAD))
                 it.startsWith(COMPUTER) -> Destination.Computer(it.removePrefix(COMPUTER))
                 it.startsWith(OVERVIEW) -> Destination.Overview(it.removePrefix(OVERVIEW))
