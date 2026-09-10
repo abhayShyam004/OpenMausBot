@@ -35,6 +35,9 @@ sealed interface Destination {
     /** Settings → Workspace → Connected Apps. */
     data object ConnectedApps : Destination
 
+    /** Settings → AI providers: connect API providers from the phone. */
+    data object ProviderSetup : Destination
+
     /** A bot's computer, watch-only. Addressed by bot id for the same reason. */
     data class Computer(val botId: String) : Destination
 

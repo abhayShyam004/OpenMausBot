@@ -624,6 +624,19 @@ data class InstanceCapabilities(
 @Serializable
 data class InstanceList(val instances: List<Instance>)
 
+/**
+ * Verdict of POST /api/keys/test (`ProviderKeyVerdict` in
+ * `server/provider-key-check.ts`): whether the key opens the provider's
+ * door and, on success, a few model ids. Never carries the key.
+ */
+@Serializable
+data class ProviderKeyVerdict(
+    val ok: Boolean = false,
+    val models: List<String> = emptyList(),
+    val reason: String? = null,
+    val status: Int? = null,
+)
+
 /** Which engine actually speaks. `VoiceProvider` in `server/tts/index.ts`. */
 enum class VoiceProvider { ELEVENLABS, SYSTEM }
 

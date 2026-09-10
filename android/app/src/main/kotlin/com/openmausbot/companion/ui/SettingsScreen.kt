@@ -70,6 +70,7 @@ fun SettingsScreen(
     onBack: () -> Unit,
     onOpenRoutines: (() -> Unit)? = null,
     onOpenConnectedApps: (() -> Unit)? = null,
+    onOpenProviders: (() -> Unit)? = null,
     /** Offered instead of the computer's details when there is no pairing. */
     onConnect: (() -> Unit)? = null,
 ) {
@@ -238,7 +239,7 @@ fun SettingsScreen(
             // Routine schedules live on the computer this phone is bound to.
             // With no binding there is nothing to schedule against, so the row
             // is absent rather than present and dead.
-            if (onOpenRoutines != null || onOpenConnectedApps != null) {
+            if (onOpenRoutines != null || onOpenConnectedApps != null || onOpenProviders != null) {
                 SettingsSection("Workspace") {
                     onOpenRoutines?.let { openRoutines ->
                         SettingsButton(
@@ -251,6 +252,12 @@ fun SettingsScreen(
                         SettingsButton(
                             text = "Connected Apps",
                             onClick = openConnectedApps,
+                        )
+                    }
+                    onOpenProviders?.let { openProviders ->
+                        SettingsButton(
+                            text = "AI providers",
+                            onClick = openProviders,
                         )
                     }
                     Footnote(SettingsPolicy.WORKSPACE_FOOTER)

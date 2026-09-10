@@ -1839,6 +1839,38 @@ class Session(
         }
     }
 
+    /**
+     * Probe a provider key from the paired computer (POST /api/keys/test).
+     * Returns null on transport failure; the verdict itself never carries
+     * the key.
+     */
+    suspend fun testProviderKey(provider: String, key: String, url: String? = null): ProviderKeyVerdict? {
+        val activeClient = client ?: return null
+        return try {
+            activeClient.testProviderKey(provider, key, url)
+        } catch (error: Throwable) {
+            if (error is kotlinx.coroutines.CancellationException) throw error
+            _actionError.value = error.message
+            null
+        }
+    }
+
+    /**
+     * Persist provider key material on the paired computer (PATCH
+     * /api/config, admin scope). True when the save was accepted.
+     */
+    suspend fun saveProviderKey(provider: String, key: String, url: String? = null, model: String? = null): Boolean {
+        val activeClient = client ?: return false
+        return try {
+            activeClient.saveProviderKey(provider, key, url, model)
+            true
+        } catch (error: Throwable) {
+            if (error is kotlinx.coroutines.CancellationException) throw error
+            _actionError.value = error.message
+            false
+        }
+    }
+
     suspend fun uploadAvatar(
         data: ByteArray,
         mime: String,

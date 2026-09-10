@@ -226,6 +226,42 @@ class CompanionClient(
 
     suspend fun config(): ConfigStatus = send(makeRequest("GET", "/api/config"))
 
+    /**
+     * POST /api/keys/test — one cheap models-list probe from the server that
+     * will use the key. The verdict never carries the key back.
+     */
+    suspend fun testProviderKey(provider: String, key: String, url: String? = null): ProviderKeyVerdict = send(
+        makeRequest(
+            "POST",
+            "/api/keys/test",
+            body = buildJsonObject {
+                put("provider", provider)
+                put("key", key)
+                if (url != null) put("url", url)
+            },
+        ),
+    )
+
+    /**
+     * PATCH /api/config — persist provider key material (admin scope; the
+     * server reloads the provider fleet so the key takes effect without a
+     * restart). [provider] is one of "anthropic", "openaiCompat", "xai".
+     */
+    suspend fun saveProviderKey(provider: String, key: String, url: String? = null, model: String? = null): ConfigStatus {
+        val section = buildJsonObject {
+            put("key", key)
+            if (url != null) put("url", url)
+            if (model != null) put("model", model)
+        }
+        return send(
+            makeRequest(
+                "PATCH",
+                "/api/config",
+                body = buildJsonObject { put(provider, section) },
+            ),
+        )
+    }
+
     suspend fun connectorCatalog(): ConnectorCatalog =
         send(makeRequest("GET", "/api/connectors/catalog"))
 
